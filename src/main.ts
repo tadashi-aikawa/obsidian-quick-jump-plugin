@@ -59,7 +59,6 @@ export default class QuickJumpPlugin extends Plugin {
                         );
                         break;
                       case "external":
-                        console.log(x.link);
                         window.open(x.link);
                         break;
                     }
