@@ -51,8 +51,6 @@ export default class QuickJumpPlugin extends Plugin {
               })
             );
 
-            console.log(markPlugin.marks);
-
             if (markPlugin.marks.length === 0) {
               clean();
             }
