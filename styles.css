@@ -1,4 +1,13 @@
-/* Sets all the text color to red! */
-body {
-    color: red;
+.obsidian-quick-jump-plugin__mark {
+    display: none
+}
+.mod-active .obsidian-quick-jump-plugin__mark {
+    display: inherit;
+    position: absolute;
+    border: 1px solid white;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: aliceblue;
+    padding: 0 5px;
+    margin-top: -10px;
 }
