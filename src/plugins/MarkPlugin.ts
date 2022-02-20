@@ -2,13 +2,14 @@ import {
   Decoration,
   DecorationSet,
   EditorView,
-  ViewPlugin,
   ViewUpdate,
 } from "@codemirror/view";
 import { MarkWidget } from "../widgets/MarkWidget";
 import { AppHelper } from "../app-helper";
 
+type MarkType = "internal" | "external";
 interface Mark {
+  type: MarkType;
   char: string;
   offset: number;
   link: string;
@@ -19,21 +20,38 @@ export class MarkPlugin {
   constructor(public appHelper: AppHelper) {}
 
   createMarks(view: EditorView): DecorationSet {
-    const CHARS = "asdfghjklqwertyuiopzxcvbnm";
+    const CHARS =
+      "asdfghjklqwertyuiopzxcvbnmASDFGHJKLQWERTYUIOPZXCVBNM,./\\;:]@[1234567890-^";
     this.marks = [];
 
-    const links = this.appHelper.getCurrentFileLinks();
     const { from, to } = view.viewport;
 
-    this.marks = links
+    const links = this.appHelper.getCurrentFileLinks();
+    const internalLinkMarks = links
       .filter(
         (x) => x.position.start.offset >= from && x.position.start.offset < to
       )
       .map((x, i) => ({
-        char: CHARS[i],
+        type: "internal" as MarkType,
+        char: "",
         offset: x.position.start.offset,
         link: x.link,
       }));
+
+    const contents = this.appHelper.getCurrentContentByOffsets(from, to);
+    const urlsMatches = Array.from(
+      contents.matchAll(/(?<= |\n|^)(https?:\/\/[^ \n]+)/g)
+    );
+    const externalLinkMarks = urlsMatches.map((x, i) => ({
+      type: "external" as MarkType,
+      char: "",
+      offset: x.index,
+      link: x[0],
+    }));
+
+    this.marks = [...internalLinkMarks, ...externalLinkMarks]
+      .sort((a, b) => a.offset - b.offset)
+      .map((x, i) => ({ ...x, char: CHARS[i] }));
 
     const widgets = this.marks.map((x) =>
       Decoration.widget({
