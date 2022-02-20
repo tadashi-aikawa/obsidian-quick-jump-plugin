@@ -1,4 +1,4 @@
-import { Plugin } from "obsidian";
+import { debounce, Plugin } from "obsidian";
 import { AppHelper } from "./app-helper";
 
 import { ViewPlugin } from "@codemirror/view";
@@ -23,54 +23,56 @@ export default class QuickJumpPlugin extends Plugin {
       name: "Quick Jump",
       checkCallback: (checking: boolean) => {
         const markdownView = appHelper.getMarkdownViewInActiveLeaf();
+        const handle = () => {
+          const clean = () => {
+            this.app.scope.unregister(escHandler);
+            handlers.forEach((x) => {
+              this.app.scope.unregister(x);
+            });
+            this.extensions.remove(markViewPlugin);
+            this.app.workspace.updateOptions();
+          };
+
+          const escHandler = this.app.scope.register([], "Escape", () => {
+            clean();
+          });
+
+          const handlers = markPlugin.marks.map((x) => {
+            const isUpper = x.char !== x.char.toLowerCase();
+            return this.app.scope.register(
+              isUpper ? ["Shift"] : [],
+              x.char,
+              () => {
+                clean();
+                switch (x.type) {
+                  case "internal":
+                    appHelper.openMarkdownFileByPath(
+                      appHelper.linkText2Path(x.link),
+                      false
+                    );
+                    break;
+                  case "external":
+                    window.open(x.link);
+                    break;
+                }
+              }
+            );
+          });
+
+          if (markPlugin.marks.length === 0) {
+            clean();
+          }
+        };
+        // Avoid conflict
+        const debounceHandle = debounce(handle, 50);
 
         if (markdownView?.getMode() === "source") {
           if (!checking) {
             this.extensions = [markViewPlugin];
             this.registerEditorExtension(this.extensions);
-
-            // Avoid conflict (Using debounce is more better)
-            setTimeout(() => {
-              const clean = () => {
-                this.app.scope.unregister(escHandler);
-                handlers.forEach((x) => {
-                  this.app.scope.unregister(x);
-                });
-                this.extensions.remove(markViewPlugin);
-                this.app.workspace.updateOptions();
-              };
-
-              const escHandler = this.app.scope.register([], "Escape", () => {
-                clean();
-              });
-
-              const handlers = markPlugin.marks.map((x) => {
-                const isUpper = x.char !== x.char.toLowerCase();
-                return this.app.scope.register(
-                  isUpper ? ["Shift"] : [],
-                  x.char,
-                  () => {
-                    clean();
-                    switch (x.type) {
-                      case "internal":
-                        appHelper.openMarkdownFileByPath(
-                          appHelper.linkText2Path(x.link),
-                          false
-                        );
-                        break;
-                      case "external":
-                        window.open(x.link);
-                        break;
-                    }
-                  }
-                );
-              });
-
-              if (markPlugin.marks.length === 0) {
-                clean();
-              }
-            }, 50);
+            debounceHandle();
           }
+
           return true;
         }
       },
