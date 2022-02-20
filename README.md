@@ -5,7 +5,7 @@
 
 This plugin for [Obsidian] enables you to quickly jump to internal and external links.
 
-![](https://tadashi-aikawa.github.io/docs-obsidian-quick-jump-plugin/resources/quick-jump.gif)
+![](https://raw.githubusercontent.com/tadashi-aikawa/obsidian-quick-jump-plugin/master/resources/quick-jump.gif)
 
 This plugin is inspired by [Jump to link] plugin. The differences are...
 
