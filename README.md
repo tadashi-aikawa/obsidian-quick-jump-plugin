@@ -1,7 +1,6 @@
 # Obsidian Quick Jump Plugin
 
 [![release](https://img.shields.io/github/release/tadashi-aikawa/obsidian-quick-jump-plugin.svg)](https://github.com/tadashi-aikawa/obsidian-quick-jump-plugin/releases/latest)
-[![Tests](https://github.com/tadashi-aikawa/obsidian-quick-jump-plugin/workflows/Tests/badge.svg)](https://github.com/tadashi-aikawa/obsidian-quick-jump-plugin/actions)
 ![downloads](https://img.shields.io/github/downloads/tadashi-aikawa/obsidian-quick-jump-plugin/total)
 
 This plugin for [Obsidian] enables you to quickly jump to internal and external links.

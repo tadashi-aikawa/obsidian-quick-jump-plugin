@@ -25,17 +25,11 @@ tasks:
             - build:dev
             - watch
 
-    test:
-        desc: Unit tests
-        cmds:
-            - npm test
-
     ci:
         desc: For CI
         cmds:
             - task: init
             - task: build
-            - task: test
 
     release:
         desc: |

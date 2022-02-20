@@ -1,7 +1,7 @@
 {
   "name": "obsidian-quick-jump",
   "version": "0.1.0",
-  "description": "Todo",
+  "description": "This plugin for Obsidian enables you to quickly jump to internal and external links.",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",
