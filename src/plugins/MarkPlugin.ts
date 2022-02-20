@@ -40,7 +40,7 @@ export class MarkPlugin {
 
     const contents = this.appHelper.getCurrentContentByOffsets(from, to);
     const urlsMatches = Array.from(
-      contents.matchAll(/(?<= |\n|^)(https?:\/\/[^ \n]+)/g)
+      contents.matchAll(/(?<= |\n|^|\()(https?:\/\/[^ )\n]+)/g)
     );
     const externalLinkMarks = urlsMatches.map((x, i) => ({
       type: "external" as MarkType,
@@ -73,9 +73,7 @@ export function createViewPluginClass(markPlugin: MarkPlugin) {
     }
 
     update(update: ViewUpdate) {
-      if (update.docChanged || update.viewportChanged) {
-        this.decorations = markPlugin.createMarks(update.view);
-      }
+      this.decorations = markPlugin.createMarks(update.view);
     }
   };
 }
