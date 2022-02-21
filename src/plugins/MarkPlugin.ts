@@ -21,7 +21,7 @@ export class MarkPlugin {
 
   createMarks(view: EditorView): DecorationSet {
     const CHARS =
-      "asdfghjklqwertyuiopzxcvbnmASDFGHJKLQWERTYUIOPZXCVBNM,./\\;:]@[1234567890-^";
+      "asdfghklqwertyuopzxcvbnmASDFGHJKLQWERTYUIOPZXCVBNM,./\\;:]@[1234567890-^";
     this.marks = [];
 
     const { from, to } = view.viewport;
