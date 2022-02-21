@@ -8,7 +8,7 @@ import { MarkWidget } from "../widgets/MarkWidget";
 import { AppHelper } from "../app-helper";
 
 type MarkType = "internal" | "external";
-interface Mark {
+export interface Mark {
   type: MarkType;
   char: string;
   offset: number;
@@ -20,8 +20,7 @@ export class MarkPlugin {
   constructor(public appHelper: AppHelper) {}
 
   createMarks(view: EditorView): DecorationSet {
-    const CHARS =
-      "asdfghklqwertyuopzxcvbnmASDFGHJKLQWERTYUIOPZXCVBNM,./\\;:]@[1234567890-^";
+    const CHARS = "ASDFGHJKLQWERTYUIOPZXCVBNM,./\\:]@[1234567890-^";
     this.marks = [];
 
     const { from, to } = view.viewport;
@@ -51,6 +50,7 @@ export class MarkPlugin {
 
     this.marks = [...internalLinkMarks, ...externalLinkMarks]
       .sort((a, b) => a.offset - b.offset)
+      .slice(0, CHARS.length)
       .map((x, i) => ({ ...x, char: CHARS[i] }));
 
     const widgets = this.marks.map((x) =>
