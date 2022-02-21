@@ -1,4 +1,4 @@
-import { App, debounce, KeymapEventHandler, Plugin } from "obsidian";
+import { debounce, KeymapEventHandler, Plugin } from "obsidian";
 import { AppHelper } from "./app-helper";
 
 import { ViewPlugin } from "@codemirror/view";
