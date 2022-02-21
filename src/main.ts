@@ -61,7 +61,6 @@ export default class QuickJumpPlugin extends Plugin {
     this.keymapHandlers.forEach((x) => {
       this.app.scope.unregister(x);
     });
-    // this.extensions.remove(markViewPlugin);
     this.extensions.remove(this.extensions[0]);
     this.app.workspace.updateOptions();
   }
