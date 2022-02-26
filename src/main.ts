@@ -30,6 +30,7 @@ export default class QuickJumpPlugin extends Plugin {
           this.keymapHandlers = [
             this.app.scope.register([], "Escape", () => {
               this.clean();
+              return false;
             }),
             ...this.markPlugin.marks.flatMap((m) =>
               Array.from(this.mark2Handlers(m))
@@ -81,6 +82,7 @@ export default class QuickJumpPlugin extends Plugin {
           window.open(mark.link);
           break;
       }
+      return false;
     });
     yield this.app.scope.register(["Shift"], mark.char, () => {
       this.clean();
@@ -95,6 +97,7 @@ export default class QuickJumpPlugin extends Plugin {
           window.open(mark.link);
           break;
       }
+      return false;
     });
   }
 }
