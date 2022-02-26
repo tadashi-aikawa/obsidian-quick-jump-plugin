@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-quick-jump",
 	"name": "Quick Jump",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"minAppVersion": "0.13.26",
 	"description": "This plugin for Obsidian enables you to quickly jump to internal and external links.",
 	"author": "tadashi-aikawa",
