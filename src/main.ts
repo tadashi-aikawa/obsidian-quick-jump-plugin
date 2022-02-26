@@ -9,12 +9,13 @@ export default class QuickJumpPlugin extends Plugin {
   extensions: Extension[];
   keymapHandlers: KeymapEventHandler[];
   appHelper: AppHelper;
+  markPlugin: MarkPlugin;
 
   async onload() {
     this.appHelper = new AppHelper(this.app);
-    const markPlugin = new MarkPlugin(this.appHelper);
+    this.markPlugin = new MarkPlugin(this.appHelper);
     const markViewPlugin = ViewPlugin.fromClass(
-      createViewPluginClass(markPlugin),
+      createViewPluginClass(this.markPlugin),
       {
         decorations: (v) => v.decorations,
       }
@@ -30,12 +31,12 @@ export default class QuickJumpPlugin extends Plugin {
             this.app.scope.register([], "Escape", () => {
               this.clean();
             }),
-            ...markPlugin.marks.flatMap((m) =>
+            ...this.markPlugin.marks.flatMap((m) =>
               Array.from(this.mark2Handlers(m))
             ),
           ];
 
-          if (markPlugin.marks.length === 0) {
+          if (this.markPlugin.marks.length === 0) {
             this.clean();
           }
         };
@@ -43,7 +44,7 @@ export default class QuickJumpPlugin extends Plugin {
         const debounceHandle = debounce(handle, 50);
 
         if (markdownView?.getMode() === "source") {
-          if (!checking) {
+          if (!checking && !this.markPlugin.visible) {
             this.extensions = [markViewPlugin];
             this.registerEditorExtension(this.extensions);
             debounceHandle();
@@ -58,6 +59,7 @@ export default class QuickJumpPlugin extends Plugin {
   onunload() {}
 
   clean() {
+    this.markPlugin.clean();
     this.keymapHandlers.forEach((x) => {
       this.app.scope.unregister(x);
     });

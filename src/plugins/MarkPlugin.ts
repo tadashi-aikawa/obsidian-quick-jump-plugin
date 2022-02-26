@@ -19,9 +19,16 @@ export class MarkPlugin {
   marks: Mark[] = [];
   constructor(public appHelper: AppHelper) {}
 
+  clean() {
+    this.marks = [];
+  }
+
+  get visible() {
+    return this.marks.length > 0;
+  }
+
   createMarks(view: EditorView): DecorationSet {
     const CHARS = "ASDFGHJKLQWERTYUIOPZXCVBNM,./\\:]@[1234567890-^";
-    this.marks = [];
 
     const { from, to } = view.viewport;
 
