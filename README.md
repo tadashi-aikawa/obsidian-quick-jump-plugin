@@ -1,3 +1,7 @@
+# 🧊 This project was archived because [Jump to link] supported Live preview mode!! 🥳
+
+---
+
 # Obsidian Quick Jump Plugin
 
 [![release](https://img.shields.io/github/release/tadashi-aikawa/obsidian-quick-jump-plugin.svg)](https://github.com/tadashi-aikawa/obsidian-quick-jump-plugin/releases/latest)
